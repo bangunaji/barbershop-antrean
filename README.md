@@ -93,6 +93,12 @@ Akses Filament Admin Panel:
 /admin
 ```
 
+contoh
+
+```
+localhost:8000/admin
+```
+
 ---
 
 ## 📦 Stack Teknologi
