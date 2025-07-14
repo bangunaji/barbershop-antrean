@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* resources/css/app.css */
+
+/* ... (CSS Tailwind bawaan dan kustom lainnya) ... */
+
+/* Custom styles for dark mode input date/time to override browser defaults */
+input[type="date"],
+input[type="time"] {
+    /* Set background to dark gray, important to override browser default */
+    background-color: #374151 !important; /* Tailwind gray-700 */
+    /* Set text color to white, important to override browser default */
+    color: #ffffff !important; /* Tailwind white */
+    /* Adjust border color */
+    border-color: #4b5563 !important; /* Tailwind gray-600 */
+}
+
+/* For the date/time picker icon (e.g., calendar/clock icon inside input) */
+/* This is often a pseudo-element or part of shadow DOM, trickier to style */
+/* The actual icons might be harder to style consistently across browsers */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    /* Filter to invert colors (makes black icon white) */
+    filter: invert(100%);
+    /* You can also try changing background directly, but filter is more reliable for icons */
+    /* background-color: #ffffff; */
+    /* cursor: pointer; */
+}
+
+/* For Firefox */
+input[type="date"] {
+    -moz-appearance: none;
+}
+input[type="time"] {
+    -moz-appearance: none;
+}
+/* Ensure consistent styling for various parts */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-outer-spin-button,
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
