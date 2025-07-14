@@ -7,55 +7,110 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# 💈 Sistem Antrean Barbershop
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sistem Antrean Barbershop adalah aplikasi berbasis Laravel 12 yang dirancang untuk membantu barbershop dalam mengatur jadwal layanan, antrean pelanggan, dan pengelolaan tukang cukur. Sistem ini mendukung **role user**, khususnya untuk admin, di landing page bisa diakses guest dan juga pelanggan.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🎯 Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Manajemen akun admin (karyawan barbershop)
+- Manajemen layanan (potong rambut, shaving, dll)
+- Booking antrean terjadwal & pelanggan walk-in
+- Status antrean: **belum datang**, **datang**, **terlambat**, **selesai**, dan **batal**
+- Nomor antrean otomatis + urutan bisa diubah manual oleh admin
+- Penjadwalan jam kerja barber (barber schedule)
+- Riwayat log aktivitas antrean
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Instalasi dan Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Ikuti langkah-langkah berikut untuk menjalankan project ini secara lokal:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone Repository
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/fiebryhoga/barbershop-booking.git
+cd barbershop-booking
+````
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Install Dependensi
 
-### Premium Partners
+```bash
+composer install
+npm install && npm run dev
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Setup Environment
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Edit `.env` sesuai konfigurasi database kamu, lalu jalankan:
 
-## Code of Conduct
+```bash
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Setup Database
 
-## Security Vulnerabilities
+Pastikan database sudah tersedia, lalu jalankan:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan migrate --seed
+```
 
-## License
+Seeder akan otomatis membuat data awal layanan, barber, dan akun admin.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 👤 Akun Default (Seeder)
+
+| Role  | Email                  | Password |
+| ----- | ---------------------- | -------- |
+| Admin | [admin@example.com]    | password |
+
+
+Silakan login ke panel admin (Filament) menggunakan akun di atas.
+
+---
+
+## 🔐 Akses Admin
+
+Setelah login, admin bisa:
+
+* Melihat & mengelola antrean harian
+* Menambahkan booking manual (walk-in)
+* Mengatur ulang urutan antrean
+* Menandai status pelanggan
+* Mengatur jadwal kerja barber
+* Mengelola jenis layanan dan log aktivitas
+
+Akses Filament Admin Panel:
+
+```
+/admin
+```
+
+---
+
+## 📦 Stack Teknologi
+
+* Laravel 12
+* PHP 8.2+
+* MySQL / MariaDB
+* FilamentPHP v3
+* TailwindCSS (default dari Filament)
+* Vite
+
+---
+
+## 🤝 Kontribusi & 📄 Lisensi
+
+Proyek ini dikembangkan oleh hafa tech hub. Kontribusi dan feedback sangat kami hargai. Silakan fork repo ini, buat perubahan yang dibutuhkan, dan kirim pull request.
+
+---
+
+```
+```
