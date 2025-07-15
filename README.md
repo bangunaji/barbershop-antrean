@@ -67,9 +67,9 @@ Seeder akan membuat data dummy: paket foto, akun admin, dll.
 
 ## 👤 Akun Default (Seeder)
 
-| Role  | Email                                       | Password |
-| ----- | ------------------------------------------- | -------- |
-| Admin | [admin@studio.com](mailto:admin@studio.com) | password |
+| Role  | Email               | Password |
+| ----- | ------------------- | -------- |
+| Admin | [admin@example.com] | password |
 
 ---
 
