@@ -7,19 +7,21 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# 💈 Sistem Antrean Barbershop
+# 📸 Sistem Pemesanan Studio Fotografi
 
-Sistem Antrean Barbershop adalah aplikasi berbasis Laravel 12 yang dirancang untuk membantu barbershop dalam mengatur jadwal layanan, antrean pelanggan, dan pengelolaan tukang cukur. Sistem ini mendukung **role user**, khususnya untuk admin, di landing page bisa diakses guest dan juga pelanggan.
+Aplikasi **Studio Fotografi** berbasis Laravel 12 + Inertia.js + React, dirancang untuk mempermudah pengelolaan pemesanan jasa fotografi, melihat laporan pendapatan, dan memantau bukti pembayaran. Sistem ini mendukung peran **admin studio**, **fotografer**, dan **pelanggan**.
+
+---
 
 ## 🎯 Fitur Utama
 
-- Manajemen akun admin (karyawan barbershop)
-- Manajemen layanan (potong rambut, shaving, dll)
-- Booking antrean terjadwal & pelanggan walk-in
-- Status antrean: **belum datang**, **datang**, **terlambat**, **selesai**, dan **batal**
-- Nomor antrean otomatis + urutan bisa diubah manual oleh admin
-- Penjadwalan jam kerja barber (barber schedule)
-- Riwayat log aktivitas antrean
+* Pemesanan layanan fotografi (Pre-wed, Studio, Outdoor, dll)
+* Manajemen paket layanan & harga
+* Upload bukti pembayaran pelanggan
+* Galeri portofolio (admin upload, tampil di halaman publik)
+* Laporan pendapatan harian/bulanan dengan fitur ekspor
+* Filter pemesanan berdasarkan tanggal & paket
+* Panel admin dengan FilamentPHP
 
 ---
 
@@ -30,9 +32,9 @@ Ikuti langkah-langkah berikut untuk menjalankan project ini secara lokal:
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/fiebryhoga/barbershop-booking.git
-cd barbershop-booking
-````
+git clone https://github.com/username/studio-fotografi.git
+cd studio-fotografi
+```
 
 ### 2. Install Dependensi
 
@@ -55,49 +57,46 @@ php artisan key:generate
 
 ### 4. Setup Database
 
-Pastikan database sudah tersedia, lalu jalankan:
-
 ```bash
 php artisan migrate --seed
 ```
 
-Seeder akan otomatis membuat data awal layanan, barber, dan akun admin.
+Seeder akan membuat data dummy: paket foto, akun admin, dll.
 
 ---
 
 ## 👤 Akun Default (Seeder)
 
-| Role  | Email                  | Password |
-| ----- | ---------------------- | -------- |
-| Admin | [admin@example.com]    | password |
-
-
-Silakan login ke panel admin (Filament) menggunakan akun di atas.
+| Role  | Email                                       | Password |
+| ----- | ------------------------------------------- | -------- |
+| Admin | [admin@studio.com](mailto:admin@studio.com) | password |
 
 ---
 
-## 🔐 Akses Admin
+## 🔐 Akses Admin Panel
 
-Setelah login, admin bisa:
-
-* Melihat & mengelola antrean harian
-* Menambahkan booking manual (walk-in)
-* Mengatur ulang urutan antrean
-* Menandai status pelanggan
-* Mengatur jadwal kerja barber
-* Mengelola jenis layanan dan log aktivitas
-
-Akses Filament Admin Panel:
+Login sebagai admin dan kelola data melalui:
 
 ```
 /admin
 ```
 
-contoh
+Contoh:
 
 ```
-localhost:8000/admin
+http://localhost:8000/admin
 ```
+
+---
+
+## 🖼️ Halaman Publik
+
+Tampilan berbasis **React + Inertia.js** (Single Page Application):
+
+* Halaman landing: info paket foto
+* Galeri: showcase portofolio hasil foto
+* Form pemesanan: kirim data & upload bukti bayar
+* Tanpa reload antar halaman
 
 ---
 
@@ -106,17 +105,25 @@ localhost:8000/admin
 * Laravel 12
 * PHP 8.2+
 * MySQL / MariaDB
+* Inertia.js + React
 * FilamentPHP v3
-* TailwindCSS (default dari Filament)
+* TailwindCSS
 * Vite
 
 ---
 
-## 🤝 Kontribusi & 📄 Lisensi
+## 📤 Fitur Ekspor Laporan
 
-Proyek ini dikembangkan oleh hafa tech hub. Kontribusi dan feedback sangat kami hargai. Silakan fork repo ini, buat perubahan yang dibutuhkan, dan kirim pull request.
+Fitur ini terdapat di admin panel:
+
+* Ekspor laporan pendapatan ke Excel
+* Filter berdasarkan tanggal & jenis paket
+* Notifikasi jika ekspor gagal atau sukses
 
 ---
 
-```
-```
+## 🤝 Kontribusi & Lisensi
+
+Proyek ini dikembangkan oleh tim internal Studio Fotografi. Kontribusi sangat terbuka! Fork, modifikasi, dan ajukan pull request jika tertarik.
+
+Lisensi: MIT.
