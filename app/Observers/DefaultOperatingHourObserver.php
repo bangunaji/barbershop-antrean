@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\DefaultOperatingHour;
-use App\Models\ActivityLog;
 use Illuminate\Support\Carbon; 
 
 class DefaultOperatingHourObserver
@@ -19,12 +18,6 @@ class DefaultOperatingHourObserver
         $openTime = $defaultOperatingHour->open_time ? $defaultOperatingHour->open_time->setTimezone(config('app.timezone'))->format('H:i') : '-';
         $closeTime = $defaultOperatingHour->close_time ? $defaultOperatingHour->close_time->setTimezone(config('app.timezone'))->format('H:i') : '-';
 
-        ActivityLog::createLog(
-            'created_default_schedule',
-            $defaultOperatingHour,
-            'Admin menambahkan jadwal default untuk hari ' . $this->getDayName($defaultOperatingHour->day_of_week) . 
-            ' (' . ($defaultOperatingHour->is_closed ? 'Tutup' : 'Buka ' . $openTime . '-' . $closeTime) . ').'
-        );
     }
 
     public function updated(DefaultOperatingHour $defaultOperatingHour): void
@@ -52,21 +45,10 @@ class DefaultOperatingHourObserver
             $description .= "Jam tutup berubah dari '{$oldTime}' menjadi '{$newTime}'. ";
         }
 
-        ActivityLog::createLog(
-            'updated_default_schedule',
-            $defaultOperatingHour,
-            trim($description),
-            array_intersect_key($defaultOperatingHour->getOriginal(), $changes),
-            $changes
-        );
     }
 
     public function deleted(DefaultOperatingHour $defaultOperatingHour): void
     {
-        ActivityLog::createLog(
-            'deleted_default_schedule',
-            $defaultOperatingHour,
-            'Admin menghapus jadwal default hari ' . $this->getDayName($defaultOperatingHour->day_of_week) . '.'
-        );
+        
     }
 }

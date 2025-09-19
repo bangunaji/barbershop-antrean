@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Mancave Barbershop - Gaya Premium Pria Modern</title>
+    <title>Onesky Hair Studio barbershop - Gaya Premium Pria Modern</title>
 
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -24,7 +24,7 @@
                 <div class="flex items-center">
                     {{-- Logo --}}
                     <a href="{{ route('landing') }}" class="font-black text-2xl text-gray-800" style="font-family: 'Playfair Display', serif;">
-                        MANCAVE
+                        Onesky Hair Studio
                     </a>
                 </div>
 
@@ -95,10 +95,10 @@
     <footer class="bg-gray-900 text-white">
         <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
             <a href="{{ route('landing') }}" class="font-black text-2xl" style="font-family: 'Playfair Display', serif;">
-                MANCAVE
+                Onesky Hair studio
             </a>
-            <p class="mt-4 text-gray-400">Gaya Premium Pria Modern Sejak 2024</p>
-            <p class="mt-2 text-sm text-gray-500">© {{ date('Y') }} The Mancave Barbershop. All Rights Reserved.</p>
+            <p class="mt-4 text-gray-400">Gaya Premium Pria Modern Sejak 2025</p>
+            <p class="mt-2 text-sm text-gray-500">© {{ date('Y') }} Onesky Hair Studio Barbershop. All Rights Reserved.</p>
         </div>
     </footer>
 </body>

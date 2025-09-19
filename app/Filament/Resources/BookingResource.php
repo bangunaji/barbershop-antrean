@@ -41,14 +41,6 @@ class BookingResource extends Resource
 
     public static function getShopHoursForDate(Carbon $date): object
     {
-        $specialHours = SpecialOperatingHour::where('date', $date->toDateString())->first();
-        if ($specialHours) {
-            return (object) [
-                'is_closed' => $specialHours->is_closed,
-                'open_time' => $specialHours->open_time ? Carbon::parse($specialHours->open_time->format('H:i:s'), config('app.timezone')) : null,
-                'close_time' => $specialHours->close_time ? Carbon::parse($specialHours->close_time->format('H:i:s'), config('app.timezone')) : null,
-            ];
-        }
 
         $defaultHours = DefaultOperatingHour::where('day_of_week', $date->dayOfWeek)->first();
         if ($defaultHours) {

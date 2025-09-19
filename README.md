@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -119,3 +120,6 @@ Proyek ini dikembangkan oleh hafa tech hub. Kontribusi dan feedback sangat kami 
 ---
 
 Lisensi MIT.
+=======
+# barbershop
+>>>>>>> fec71f7b25e0016c96a86dd919886ab54a247495

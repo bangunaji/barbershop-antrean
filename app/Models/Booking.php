@@ -30,10 +30,11 @@ class Booking extends Model implements Sortable
         'total_price',
         'queue_number',
         'sort_order',
+        'shifted_by_admin',
         'arrival_status',
         'booking_status',
         'total_duration_minutes',
-        'estimated_turn_time',
+        'estimated_turn_time',   
     ];
 
     protected $casts = [
@@ -41,6 +42,7 @@ class Booking extends Model implements Sortable
         'booking_time' => 'datetime',
         'total_duration_minutes' => 'integer',
         'estimated_turn_time' => 'datetime',
+        'shifted_by_admin' => 'boolean', 
     ];
 
     public function getTotalDurationMinutesAttribute(): int
@@ -53,7 +55,6 @@ class Booking extends Model implements Sortable
         parent::boot();
 
         static::creating(function ($booking) {
-            
             $bookingDateFormatted = $booking->booking_date->format('dm');
             $prefix = 'BB-' . $bookingDateFormatted . '-';
 
@@ -70,7 +71,6 @@ class Booking extends Model implements Sortable
             }
             $booking->queue_number = $prefix . str_pad($nextSequence, 2, '0', STR_PAD_LEFT);
             
-            
             if (empty($booking->customer_name)) {
                 if ($booking->booking_type === 'online' && !empty($booking->user_id)) {
                     $user = User::find($booking->user_id);
@@ -82,14 +82,12 @@ class Booking extends Model implements Sortable
                 }
             }
 
-            
             if (is_null($booking->total_duration_minutes) && !empty($booking->services)) {
                 $booking->total_duration_minutes = $booking->getTotalDurationMinutesAttribute();
             } elseif (is_null($booking->total_duration_minutes)) {
                 $booking->total_duration_minutes = 0;
             }
-            
-            
+
             if ($booking->booking_type === 'walk-in' && is_null($booking->booking_time)) {
                 $booking->booking_time = null;
             }
@@ -98,8 +96,8 @@ class Booking extends Model implements Sortable
         static::created(function($booking) {
             static::recalculateQueueNumbersAndSortOrder($booking->booking_date->toDateString());
         });
+
         static::updated(function($booking) {
-            
             static::recalculateQueueNumbersAndSortOrder($booking->booking_date->toDateString());
         });
     }
@@ -116,50 +114,34 @@ class Booking extends Model implements Sortable
 
     public function buildSortQuery()
     {
-        
         return static::query()
             ->whereDate('booking_date', $this->booking_date)
             ->whereIn('booking_status', ['active', 'waiting', 'arrived', 'late']);
     }
 
-    
-    
     public static function recalculateQueueNumbersAndSortOrder(string $dateString): void
     {
-        
-        
         $bookingsForRecalculation = Booking::whereDate('booking_date', $dateString)
                                 ->whereIn('booking_status', ['active']) 
                                 ->orderBy('sort_order', 'asc') 
                                 ->get();
 
         $shopOpenTime = \Illuminate\Support\Carbon::parse(self::getDailyShopOpenTime(\Illuminate\Support\Carbon::parse($dateString)));
-        
         $currentServiceTime = $shopOpenTime->copy(); 
-
         $currentSortOrder = 1;
+
         foreach ($bookingsForRecalculation as $booking) {
-            
             $booking->sort_order = $currentSortOrder++; 
-
-            
-            
-            
-            
             $booking->estimated_turn_time = $currentServiceTime->copy();
-            
-            
             $currentServiceTime->addMinutes($booking->total_duration_minutes);
-
             $booking->saveQuietly(); 
         }
 
-        
         $nonActiveBookings = Booking::whereDate('booking_date', $dateString)
                                     ->whereIn('booking_status', ['completed', 'cancelled'])
                                     ->get();
+
         foreach ($nonActiveBookings as $booking) {
-            
             if (!is_null($booking->sort_order) || !is_null($booking->estimated_turn_time)) {
                 $booking->sort_order = null; 
                 $booking->estimated_turn_time = null; 
@@ -170,14 +152,7 @@ class Booking extends Model implements Sortable
 
     public static function getDailyShopOpenTime(\Illuminate\Support\Carbon $date): string
     {
-        $specialHours = \App\Models\SpecialOperatingHour::where('date', $date->toDateString())->first();
-
-        if ($specialHours) {
-            if ($specialHours->is_closed) {
-                return '00:00:00';
-            }
-            return $specialHours->open_time ? \Illuminate\Support\Carbon::parse($specialHours->open_time)->format('H:i:s') : '09:00:00';
-        }
+       
 
         $defaultOpenTime = \App\Models\Setting::where('key', 'default_open_time')->first();
         $isShopClosedDefault = \App\Models\Setting::where('key', 'is_barbershop_closed_default')->first();

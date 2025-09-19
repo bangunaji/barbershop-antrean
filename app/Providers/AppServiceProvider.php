@@ -34,7 +34,6 @@ class AppServiceProvider extends ServiceProvider
         Booking::observe(BookingObserver::class);
         Service::observe(ServiceObserver::class);
         DefaultOperatingHour::observe(DefaultOperatingHourObserver::class);
-        SpecialOperatingHour::observe(SpecialOperatingHourObserver::class);
 
         
         config(['app.locale' => 'id']); 

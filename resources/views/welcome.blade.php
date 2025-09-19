@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Mancave Barbershop - Gaya Premium Pria Modern</title>
+    <title>Onesky Hair Studio</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&family=playfair-display:700,900&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,7 +17,7 @@
                 <div class="flex items-center">
                     
                     <a href="{{ route('landing') }}" class="font-black text-2xl text-gray-800" style="font-family: 'Playfair Display', serif;">
-                        MANCAVE
+                        Onesky Hair Studio
                     </a>
                 </div>
 
@@ -82,7 +82,7 @@
         
         <section class="relative h-[600px] bg-gray-900 flex items-center justify-center text-white">
             <img src="https://images.pexels.com/photos/2061820/pexels-photo-2061820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                 alt="Suasana Barbershop Mancave" class="absolute w-full h-full object-cover opacity-40">
+                 alt="Suasana Barbershop Onesky" class="absolute w-full h-full object-cover opacity-40">
             <div class="relative z-10 text-center px-4">
                 <h1 class="text-4xl md:text-6xl font-black tracking-tight" style="font-family: 'Playfair Display', serif;">Presisi Dalam Setiap Potongan</h1>
                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-200">Temukan kembali gaya Anda di tangan para ahli. Kami bukan sekadar barbershop, kami adalah destinasi.</p>
@@ -96,7 +96,7 @@
         <section id="why-us" class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Kenapa Memilih The Mancave?</h2>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Kenapa Memilih Onesky Hair Studio</h2>
                     <p class="mt-4 text-lg text-gray-500">Kami memberikan lebih dari sekadar potongan rambut.</p>
                 </div>
                 <div class="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4 text-center">
@@ -232,7 +232,7 @@
                         <p class="flex items-start"><strong class="w-24">WhatsApp:</strong> <a href="https://wa.me/6281234567890" class="text-yellow-600 hover:underline">0812-3456-7890</a></p>
                     </div>
                     <div class="mt-6 rounded-lg shadow-md overflow-hidden">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126904.39480991942!2d106.749649!3d-6.2929236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1e390a2e37d%3A0x24e3d54834956f6!2sSouth%20Jakarta%2C%20South%20Jakarta%20City%2C%20Jakarta!5e0!3m2!1sen!2sid!4v1678886543210!5m2!1sen!2sid"
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.8904769110027!2d105.3075982850293!3d-5.121346316314257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40bbecc542c831%3A0xd3769f7323b73324!2sOnesky%20barber!5e0!3m2!1sid!2sid!4v1754475561182!5m2!1sid!2sid"
                                 width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                 </div>
@@ -263,10 +263,10 @@
     <footer class="bg-gray-900 text-white">
         <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
             <a href="{{ route('landing') }}" class="font-black text-2xl" style="font-family: 'Playfair Display', serif;">
-                MANCAVE
+                Onesky Hair
             </a>
             <p class="mt-4 text-gray-400">Gaya Premium Pria Modern Sejak 2024</p>
-            <p class="mt-2 text-sm text-gray-500">&copy; {{ date('Y') }} The Mancave Barbershop. All Rights Reserved.</p>
+            <p class="mt-2 text-sm text-gray-500">&copy; {{ date('Y') }} Onesky Hair Studio. All Rights Reserved.</p>
         </div>
     </footer>
 

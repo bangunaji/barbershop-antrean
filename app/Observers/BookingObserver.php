@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Booking;
-use App\Models\ActivityLog;
 use Illuminate\Support\Carbon; 
 
 class BookingObserver
@@ -14,14 +13,6 @@ class BookingObserver
         $bookingDate = $booking->booking_date->setTimezone(config('app.timezone'));
         $bookingTime = $booking->booking_time ? $booking->booking_time->setTimezone(config('app.timezone')) : null;
 
-        ActivityLog::createLog(
-            'created_booking',
-            $booking,
-            'Admin membuat booking baru untuk ' . $booking->customer_name . 
-            ' (' . $booking->booking_type . ') pada tanggal ' . $bookingDate->format('d M Y') .
-            ' jam ' . ($bookingTime ? $bookingTime->format('H:i') : '-') .
-            ' dengan kode antrean ' . $booking->queue_number . '.'
-        );
     }
 
     public function updated(Booking $booking): void
@@ -85,12 +76,6 @@ class BookingObserver
             $description = 'Admin memperbarui detail booking ' . $booking->customer_name . ' (Kode: ' . $booking->queue_number . ').';
         }
 
-        ActivityLog::createLog(
-            'updated_booking',
-            $booking,
-            $description,
-            array_intersect_key($original, $changes),
-            $changes
-        );
+       
     }
 }

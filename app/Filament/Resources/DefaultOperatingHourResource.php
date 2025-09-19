@@ -20,7 +20,7 @@ class DefaultOperatingHourResource extends Resource
     protected static ?string $model = DefaultOperatingHour::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
-    protected static ?string $navigationGroup = 'Pengaturan';
+   
     protected static ?string $navigationLabel = 'Jadwal Default';
     protected static ?string $pluralModelLabel = 'Jadwal Default';
 

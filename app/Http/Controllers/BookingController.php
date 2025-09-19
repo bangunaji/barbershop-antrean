@@ -6,11 +6,15 @@ use App\Models\Booking;
 use App\Models\Service;
 use App\Models\DefaultOperatingHour;
 use App\Models\SpecialOperatingHour;
+use App\Models\RefundRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Midtrans\Snap;
+use Midtrans\Config;
+
 
 class BookingController extends Controller
 {
@@ -19,14 +23,6 @@ class BookingController extends Controller
     {
         $date = $date->setTimezone(config('app.timezone'));
 
-        $specialHours = SpecialOperatingHour::where('date', $date->toDateString())->first();
-        if ($specialHours) {
-            return (object) [
-                'is_closed' => $specialHours->is_closed,
-                'open_time' => $specialHours->open_time ? Carbon::parse($date->toDateString() . ' ' . $specialHours->open_time->format('H:i:s'), config('app.timezone')) : null,
-                'close_time' => $specialHours->close_time ? Carbon::parse($date->toDateString() . ' ' . $specialHours->close_time->format('H:i:s'), config('app.timezone')) : null,
-            ];
-        }
 
         $defaultHours = DefaultOperatingHour::where('day_of_week', $date->dayOfWeek)->first();
         if ($defaultHours) {
@@ -85,7 +81,7 @@ class BookingController extends Controller
     /**
      * Simpan booking baru ke database.
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): \Illuminate\View\View | \Illuminate\Http\RedirectResponse
     {
         $user = Auth::user();
         
@@ -167,6 +163,8 @@ class BookingController extends Controller
             ],
         ]);
 
+       
+
         $services = Service::find($request->selectedServices);
         $totalPrice = $services->sum('price');
         $totalDurationMinutes = $services->sum('duration_minutes');
@@ -187,14 +185,51 @@ class BookingController extends Controller
 
         $booking = null;
 
-        DB::transaction(function () use ($bookingData, $request, &$booking) {
-            $booking = Booking::create($bookingData);
-            $booking->services()->attach($request->selectedServices);
-            Booking::recalculateQueueNumbersAndSortOrder($booking->booking_date->toDateString());
-        });
 
-        return redirect()->route('booking.show', $booking->id)->with('success', 'Booking berhasil dibuat! Nomor antrean Anda: ' . $booking->queue_number);
+        DB::transaction(function () use ($bookingData, $request, &$booking) {
+        $booking = Booking::create($bookingData);
+        $booking->services()->attach($request->selectedServices);
+       
+    });
+
+    // Midtrans Snap config
+    \Midtrans\Config::$serverKey = config('midtrans.server_key');
+    \Midtrans\Config::$isProduction = config('midtrans.is_production');
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
+
+    // Buat data Snap transaction
+    $snapPayload = [
+        'transaction_details' => [
+            'order_id' => 'ORDER-' . $booking->id . '-' . time(),
+            'gross_amount' => (int) $booking->total_price,
+        ],
+        'customer_details' => [
+            'first_name' => $booking->customer_name,
+            'phone' => $booking->customer_phone,
+        ],
+        'callbacks' => [
+            'finish' => route('payment.success', $booking->id),
+        ],
+    ];
+
+    // Buat Snap token
+    $snapToken = Snap::getSnapToken($snapPayload);
+
+    // Simpan snap token di booking (opsional)
+    $booking->snap_token = $snapToken;
+    $booking->save();
+
+    // Redirect ke view dengan Snap JS
+    return view('booking.payment', [
+        'snapToken' => $snapToken,
+        'booking' => $booking,
+    ]);
+
+        
     }
+
+    
 
     /**
      * Tampilkan detail booking (untuk pelanggan).
@@ -211,7 +246,7 @@ class BookingController extends Controller
         $queuePosition = '-';
         $estimatedWaitTime = 'Tidak tersedia'; 
 
-        if ($booking->booking_status === 'active') {
+        if ($booking->booking_status === 'active' && $booking->payment_status === 'paid'){
             
             
             Booking::recalculateQueueNumbersAndSortOrder($booking->booking_date->toDateString());
@@ -423,4 +458,115 @@ class BookingController extends Controller
             'bookings' => $bookings,
         ]);
     }
+
+    public function paymentSuccess(Booking $booking)
+{
+    // Tandai bahwa pembayaran sudah sukses
+    $booking->payment_status = 'paid';
+    $booking->save();
+
+    // Hitung ulang semua antrean di tanggal tersebut
+    Booking::recalculateQueueNumbersAndSortOrder($booking->booking_date->toDateString());
+
+    // Dapatkan antrean booking ini (pastikan booking-nya ter-refresh)
+    $booking->refresh();
+
+    // Kalau booking ini belum punya queue_number, beri nomor di akhir
+    if (!$booking->queue_number) {
+        $lastQueueNumber = Booking::where('booking_date', $booking->booking_date)
+                                ->where('booking_status', 'active')
+                                ->where('payment_status', 'paid')
+                                ->max('queue_number');
+
+        $booking->queue_number = $lastQueueNumber ? $lastQueueNumber + 1 : 1;
+        $booking->sort_order = $booking->queue_number;
+        $booking->save();
+    }
+
+    return redirect()->route('booking.show', $booking->id)->with('success', 'Pembayaran berhasil. Anda telah mendapat nomor antrean.');
+}
+
+
+public function pay(Booking $booking)
+{
+    if ($booking->payment_status !== 'unpaid') {
+        return redirect()->back()->with('error', 'Booking ini sudah dibayar.');
+    }
+
+    // Buat Snap Token ulang
+    $params = [
+        'transaction_details' => [
+            'order_id' => 'BOOK-' . $booking->id,
+            'gross_amount' => $booking->total_price,
+        ],
+        'customer_details' => [
+            'first_name' => $booking->customer_name,
+            'email' => $booking->customer_email ?? 'dummy@email.com',
+        ],
+    ];
+
+    \Config::set('midtrans.server_key', env('MIDTRANS_SERVER_KEY'));
+    \Config::set('midtrans.client_key', env('MIDTRANS_CLIENT_KEY'));
+    \Config::set('midtrans.is_production', env('MIDTRANS_IS_PRODUCTION', false));
+    \Config::set('midtrans.sanitize', true);
+    \Config::set('midtrans.use_3ds', true);
+
+    \Config::set('midtrans.server_key', config('midtrans.server_key'));
+    \Config::set('midtrans.client_key', config('midtrans.client_key'));
+
+    \Midtrans\Config::$serverKey = config('midtrans.server_key');
+    \Midtrans\Config::$isProduction = config('midtrans.is_production');
+    \Midtrans\Config::$isSanitized = config('midtrans.sanitize');
+    \Midtrans\Config::$is3ds = config('midtrans.use_3ds');
+
+    $snapToken = Snap::getSnapToken($params);
+
+    // Tampilkan halaman pembayaran ulang
+    return view('booking.payment', compact('booking', 'snapToken'));
+}
+
+
+public function submitRefund(Request $request, $id)
+{
+    $request->validate([
+        'refund_reason' => 'required|string|min:10',
+    ]);
+
+    $booking = Booking::findOrFail($id);
+
+    if ($booking->payment_status !== 'paid' || $booking->refund_status !== 'none') {
+        return redirect()->back()->with('error', 'Refund tidak bisa diproses.');
+    }
+
+    $booking->update([
+        'refund_status' => 'requested',
+        'refund_reason' => $request->refund_reason,
+    ]);
+
+    // Simpan ke tabel refund_requests
+    RefundRequest::create([
+        'booking_id' => $booking->id,
+        'user_id' => $booking->user_id,
+        'reason' => $request->refund_reason,
+        'status' => 'pending',
+        'refund_account' => null, // isi jika ada input rekening
+    ]);
+
+    return redirect()->route('booking.show', $booking->id)
+        ->with('success', 'Permintaan refund berhasil dikirim. Admin akan meninjau permintaan Anda.');
+}
+
+public function showRefundForm($id)
+{
+    $booking = Booking::findOrFail($id);
+
+    if ($booking->payment_status !== 'paid') {
+        return redirect()->back()->with('error', 'Booking belum dibayar dan tidak bisa direfund.');
+    }
+
+    return view('booking.refund-form', compact('booking'));
+}
+
+
+
 }

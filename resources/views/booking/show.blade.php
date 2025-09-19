@@ -61,6 +61,15 @@
                     </div>
                 </div>
 
+               @if ($booking->shifted_by_admin)
+    <div class="mt-4 p-4 bg-yellow-800 border border-yellow-700 rounded text-yellow-100 font-medium">
+        Antrean ini telah <span class="font-bold">digeser oleh admin</span> karena adanya pelanggan walk-in.
+        Mohon cek urutan antrean terbaru Anda.
+    </div>
+@endif
+
+
+
                 @if ($booking->booking_status === 'active')
                     <div class="mt-6 p-4 bg-yellow-900 border border-yellow-800 rounded-lg text-center text-yellow-100"> 
                         <p class="text-lg font-semibold">Anda berada di antrean nomor <span class="text-2xl font-bold">{{ $queuePosition }}</span>.</p>
@@ -89,6 +98,28 @@
                 <p class="text-sm font-medium text-gray-400">Total Harga:</p>
                 <p class="text-xl font-bold text-white">{{ Number::currency($booking->total_price, 'IDR') }}</p>
 
+@if ($booking->payment_status === 'unpaid')
+    <form action="{{ route('booking.pay', $booking->id) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary">
+            Bayar Sekarang
+        </button>
+    </form>
+@endif
+
+@if ($booking->payment_status === 'paid' && $booking->refund_status === 'none')
+    <a href="{{ route('booking.refund.form', $booking->id) }}" class="btn btn-warning mt-2">
+        Ajukan Refund
+    </a>
+@endif
+
+@if ($booking->refund_status === 'requested')
+    <div class="alert alert-info mt-3">
+        Refund sedang diproses. Alasan: {{ $booking->refund_reason }}
+    </div>
+@endif
+
+                
                 @if ($booking->notes)
                     <div class="mt-6">
                         <p class="text-sm font-medium text-gray-400">Catatan:</p>

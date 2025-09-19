@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'The Mancave Barbershop - Gaya Premium Pria Modern')
+@section('title', 'barbershop onesky')
 
 @section('content')
     {{-- HERO SECTION --}}
     <section class="relative h-screen bg-black flex items-center justify-center text-white">
         <img src="https://images.pexels.com/photos/2061820/pexels-photo-2061820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-             alt="Suasana Barbershop Mancave" class="absolute w-full h-full object-cover opacity-40">
+             alt="Suasana Barbershop Onesky" class="absolute w-full h-full object-cover opacity-40">
         <div class="relative z-10 text-center px-4">
             <h1 class="text-4xl md:text-6xl font-black tracking-tight" style="font-family: 'Playfair Display', serif;">Presisi Dalam Setiap Potongan</h1>
             <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-300">Temukan kembali gaya Anda di tangan para ahli. Kami bukan sekadar barbershop, kami adalah destinasi.</p> {{-- Warna teks disesuaikan --}}
@@ -20,7 +20,7 @@
     <section id="why-us" class="py-20 bg-gray-800 text-white"> 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-white">Kenapa Memilih The Mancave?</h2> 
+                <h2 class="text-3xl font-extrabold text-white">Kenapa Memilih The Onesky Hair Studio?</h2> 
                 <p class="mt-4 text-lg text-gray-300">Kami memberikan lebih dari sekadar potongan rambut.</p> 
             </div>
             <div class="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4 text-center">
@@ -86,10 +86,10 @@
             <h2 class="text-3xl font-extrabold text-white">Galeri Hasil Karya</h2>
             <p class="mt-4 text-lg text-gray-300">Lihat beberapa gaya terbaik yang kami ciptakan.</p>
             <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <img src="https://images.pexels.com/photos/3998402/pexels-photo-3998402.jpeg" alt="Gaya rambut 1" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
-                <img src="https://images.pexels.com/photos/3998429/pexels-photo-3998429.jpeg" alt="Gaya rambut 2" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
-                <img src="https://images.pexels.com/photos/3998413/pexels-photo-3998413.jpeg" alt="Gaya rambut 3" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
-                <img src="https://images.pexels.com/photos/3998426/pexels-photo-3998426.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Gaya rambut 4" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
+                <img src="{{ asset('build/assets/barbersatu.jpg') }}" alt="Gaya rambut 1" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
+                <img src="{{ asset('build/assets/barberdua.jpg') }}" alt="Gaya rambut 2" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
+                <img src="{{ asset('build/assets/barbertiga.jpg') }}" alt="Gaya rambut 3" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
+                <img src="{{ asset('build/assets/barberempat.jpg') }}" alt="Gaya rambut 4" class="rounded-lg shadow-md w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
             </div>
         </div>
     </section>
@@ -151,13 +151,12 @@
                 <h2 class="text-3xl font-extrabold text-white">Kunjungi Kami</h2>
                 <p class="mt-4 text-lg text-gray-300">Kami siap menyambut Anda.</p>
                 <div class="mt-6 space-y-4">
-                    <p class="flex items-start text-gray-300"><strong class="w-24 text-white">Alamat:</strong> <span>Jl. Gaya Keren No. 45, Jakarta Selatan</span></p> 
-                    <p class="flex items-start text-gray-300"><strong class="w-24 text-white">Jam Buka:</strong> <span>Setiap Hari, 09:00 - 20:00 WIB</span></p>
+                    <p class="flex items-start text-gray-300"><strong class="w-24 text-white">Alamat:</strong> <span>Onesky barber, Jl. Letjend Alamsyah Ratu Prawira Negara No.13, Kec. Metro Pusat, Metro lampung, Lampung 34111</span></p> 
+                    <p class="flex items-start text-gray-300"><strong class="w-24 text-white">Jam Buka:</strong> <span>Setiap Hari, 09:00 - 21:00 WIB</span></p>
                     <p class="flex items-start text-gray-300"><strong class="w-24 text-white">WhatsApp:</strong> <a href="https://wa.me/6281234567890" class="text-yellow-500 hover:underline">0812-3456-7890</a></p> 
                 </div>
                 <div class="mt-6 rounded-lg shadow-md overflow-hidden">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1956693838275!2d106.82025211476906!3d-6.20876359550742!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f46b1f2b2b2b%3A0x6a2e4a2e4a2e4a2e!2sMonas%20(Monumen%20Nasional)!5e0!3m2!1sen!2sid!4v1678912345678!5m2!1sen!2sid" {{-- Ganti dengan embed Monas --}}
-                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                   <iframe src=https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.8904769110027!2d105.3075982850293!3d-5.121346316314257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40bbecc542c831%3A0xd3769f7323b73324!2sOnesky%20barber!5e0!3m2!1sid!2sid!4v1754475561182!5m2!1sid!2sid" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
             <div>

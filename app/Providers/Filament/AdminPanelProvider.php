@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Onesky Hair Studio ')
             ->colors([
                 'primary' => Color::Amber,
             ])
