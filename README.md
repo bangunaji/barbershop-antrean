@@ -31,8 +31,8 @@ Ikuti langkah-langkah berikut untuk menjalankan project ini secara lokal:
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/fiebryhoga/barbershop-booking.git
-cd barbershop-booking
+git clone https://github.com/bangunaji/barbershop-antrean.git
+cd barbershop-antrean
 ````
 
 ### 2. Install Dependensi
